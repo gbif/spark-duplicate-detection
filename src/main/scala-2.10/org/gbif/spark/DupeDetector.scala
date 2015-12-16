@@ -33,9 +33,9 @@ object DupeDetector {
       val compCollector = if (row.isNullAt(row.fieldIndex("collector"))) None: Option[String] else Option[String](row.getString(row.fieldIndex("collector")))
       val compSpeciesKey = row.getInt(row.fieldIndex("taxonkey"))
       (generateFingerprint(compSpeciesKey, compLat, compLng, compDate, compCollector), compId + '|' + compDataset.getOrElse("").substring(0, 7))
-    }).repartition(600)
-      .persist
-      .reduceByKey((x, y) => x + " " + y)
+    }).repartition(600) // lots of small chunks so we don't get a few huge chunks that take a really long time on a single thread
+      .persist // cache in memory for the duration of this job
+      .reduceByKey((x, y) => x + " " + y) // group by the fingerprint, where the "values" are concatenated to produce our dupes
       .filter(t => t._2.contains(" ")) // keep only those rows where dupe count > 1
       .filter(t => {
         val ids = t._2.split(" ")
