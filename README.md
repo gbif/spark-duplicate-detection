@@ -44,6 +44,6 @@ sbt package assembly
 
 ```
 
-Look in the path you set in DupeDetector for a new directory spark-duplicate-detector/<timestamp> that has your result. 
+Look in the path you set in DupeDetector for a new directory spark-duplicate-detector/timestamp that has your result. 
 
 
