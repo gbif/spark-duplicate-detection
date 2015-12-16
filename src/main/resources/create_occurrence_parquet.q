@@ -1,31 +1,21 @@
-DROP TABLE IF EXISTS occurrence_parquet;
+drop table if exists occurrence_parquet;
 
-CREATE TABLE occurrence_parquet (
+create table occurrence_parquet (
+  gbifid INT,
   datasetkey STRING,
-  kingdom STRING,
-  phylum STRING,
-  class_ STRING,
-  order_ STRING,
-  family STRING,
-  genus STRING,
-  species STRING,
+  taxonkey INT,
   lat DOUBLE,
   lng DOUBLE,
   date BIGINT,
   collector STRING
 )
-STORED AS PARQUET;
+stored as parquet;
 
 insert overwrite table occurrence_parquet
 select
+  gbifid,
   datasetkey,
-  kingdom,
-  phylum,
-  class,
-  order_,
-  family,
-  genus,
-  species,
+  taxonkey,
   decimallatitude,
   decimallongitude,
   eventdate,
